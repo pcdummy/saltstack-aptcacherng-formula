@@ -8,3 +8,9 @@ aptcacherng:
 {% for p in datamap['pkgs'] %}
       - {{ p }}
 {% endfor %}
+  service:
+    - running
+    - name: {{ datamap['service']['name'] }}
+    - enable: {{ datamap['service']['enable'] }}
+    - require:
+      - pkg: aptcacherng

@@ -2,4 +2,7 @@
 Debian:
   pkgs:
     - apt-cacher-ng
+  service:
+    name: apt-cacher-ng
+    enable: True
 {% endload %}
