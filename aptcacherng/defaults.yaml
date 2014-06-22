@@ -2,7 +2,9 @@
 Debian:
   pkgs:
     - apt-cacher-ng
-  service:
-    name: apt-cacher-ng
-    enable: True
+  service: {}
+  config:
+    manage:
+      - acng_conf
+    acng_conf: {}
 {% endload %}
