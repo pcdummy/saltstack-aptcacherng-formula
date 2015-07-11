@@ -14,16 +14,13 @@ aptcacherng:
     - require:
       - pkg: aptcacherng
 
-{% if 'acng_conf' in datamap.config.manage|default([]) %}
-acng_conf:
+{% for k, v in salt['pillar.get']('aptcacherng:configs', {})|dictsort %}
+aptcacherng_conf_{{ k }}:
   file:
-    - managed
-    - name: {{ datamap.config.acng_conf.path|default('/etc/apt-cacher-ng/acng.conf') }}
-    - source: {{ datamap.config.acng_conf.template_path|default('salt://aptcacherng/files/acng.conf') }}
-    - mode: 644
-    - user: root
-    - group: root
-    - template: jinja
-    - watch_in:
-      - service: aptcacherng
-{% endif %}
+     - managed
+     - name: {{ datamap.conf_dir|default('/etc/apt-cacher-ng') }}/{{ k }}
+     - mode: 644
+     - user: root
+     - group: root
+     - contents_pillar: aptcacherng:configs:{{ k }}:content
+{% endfor %}

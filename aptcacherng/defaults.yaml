@@ -4,7 +4,8 @@ Debian:
     - apt-cacher-ng
   service: {}
   config:
-    manage:
-      - acng_conf
-    acng_conf: {}
+    acng.conf:
+      content: ""
+    zz_debconf.conf:
+      content: ""
 {% endload %}
