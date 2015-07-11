@@ -17,10 +17,12 @@ aptcacherng:
 {% for k, v in salt['pillar.get']('aptcacherng:configs', {})|dictsort %}
 aptcacherng_conf_{{ k }}:
   file:
-     - managed
-     - name: {{ datamap.conf_dir|default('/etc/apt-cacher-ng') }}/{{ k }}
-     - mode: 644
-     - user: root
-     - group: root
-     - contents_pillar: aptcacherng:configs:{{ k }}:content
+    - managed
+    - name: {{ datamap.conf_dir|default('/etc/apt-cacher-ng') }}/{{ k }}
+    - mode: 644
+    - user: root
+    - group: root
+    - contents_pillar: aptcacherng:configs:{{ k }}:content
+    - watch_in:
+      - service: aptcacherng
 {% endfor %}
