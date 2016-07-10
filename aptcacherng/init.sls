@@ -14,15 +14,17 @@ aptcacherng:
     - require:
       - pkg: aptcacherng
 
-{% for k, v in salt['pillar.get']('aptcacherng:configs', {})|dictsort %}
-aptcacherng_conf_{{ k }}:
+{% set id = 0 %}
+{% for v in salt['pillar.get']('aptcacherng:configs', {}) %}
+aptcacherng_conf_{{ v['file'] }}:
   file:
     - managed
-    - name: {{ datamap.conf_dir|default('/etc/apt-cacher-ng') }}/{{ k }}
+    - name: {{ datamap.conf_dir|default('/etc/apt-cacher-ng') }}/{{ v['file'] }}
     - mode: 644
     - user: root
     - group: root
-    - contents_pillar: aptcacherng:configs:{{ k }}:content
+    - contents_pillar: aptcacherng:configs:{{ id }}:content
     - watch_in:
       - service: aptcacherng
+{%- set id = id + 1 %}
 {% endfor %}
